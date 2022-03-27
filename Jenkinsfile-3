@@ -21,7 +21,7 @@ pipeline{
             sh 'ech $DOCKERHUB_CREDENTIALS_PSW  |  docker Login -u $DOCKERHUB_CREDENTIALS_USR  --password-stdin'
         }   }
 
-    stage('Build'){
+    stage('Push'){
         steps{
             sh 'docker push  230589/mypythonapp:latest '
         }      
