@@ -18,7 +18,7 @@ pipeline{
         } }   
     stage('Login'){
         steps{
-           sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+           sh 'docker login --username admin -p admin 20.231.74.68:9001'
         }   }
 
     stage('Push'){
