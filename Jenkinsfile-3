@@ -1,0 +1,29 @@
+pipeline{
+
+   agent any
+   
+   environment {
+       DOCKERHUB_CREDENTIALS= credentials('dockerhub')
+                }     
+    stages  {
+
+      stage ('gitclone'){
+        steps {
+            git 'https://github.com/Sammouda23/python-app.git'
+              }
+        }
+      stage('Build')
+        steps{
+            sh 'docker build -t 230589/mypythonapp:latest . '
+        }   
+      stage('Login')
+        steps{
+            sh 'ech $DOCKERHUB_CREDENTIALS_PSW  |  docker Login -u $DOCKERHUB_CREDENTIALS_USR  --password-stdin'
+        }   
+
+      stage('Build')
+        steps{
+            sh 'docker push  230589/mypythonapp:latest '
+        }      
+
+    }
