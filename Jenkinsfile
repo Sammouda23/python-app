@@ -12,6 +12,7 @@ pipeline {
       steps {
         sh """
           docker run --rm hello_there
+          flask run &
         """
       }
     }
