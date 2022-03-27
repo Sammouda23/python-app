@@ -23,7 +23,7 @@ pipeline{
 
     stage('Push'){
         steps{
-            sh 'docker push  "20.231.74.68:9001/myphth-app:${BUILD_ID}"
+            sh 'docker push  "20.231.74.68:9001/myphth-app:${BUILD_ID}" '
         }      
 
     }
