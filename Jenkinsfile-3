@@ -14,7 +14,7 @@ pipeline{
         }
     stage('Build'){
         steps{
-            sh 'docker build -t 230589/mypythonapp:latest . '
+            sh 'docker build -t 20.231.74.68:9001/myphth-app:${BUILD_ID} . '
         } }   
     stage('Login'){
         steps{
@@ -23,7 +23,7 @@ pipeline{
 
     stage('Push'){
         steps{
-            sh 'docker push  230589/mypythonapp:latest '
+            sh 'docker push  "20.231.74.68:9001/myphth-app:${BUILD_ID}"
         }      
 
     }
