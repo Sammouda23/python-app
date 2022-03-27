@@ -1,7 +1,19 @@
-docker info 
-
-docker build -t jenkins-demo:${BUILD_NUMBER} . 
-
-docker tag jenkins-demo:${BUILD_NUMBER} jenkins-demo:latest 
-
-docker images
+pipeline {
+  agent { label "linux" }
+  stages {
+    stage("build") {
+      steps {
+        sh """
+          docker build -t hello_there .
+        """
+      }
+    }
+    stage("run") {
+      steps {
+        sh """
+          docker run --rm hello_there
+        """
+      }
+    }
+  }
+}
