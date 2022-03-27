@@ -11,8 +11,16 @@ pipeline {
     stage("run") {
       steps {
         sh """
-          docker run --rm hello_there
-          flask run &
+          docker run -d  hello_there
+  
+        """
+      }
+    }
+    stage("Testing") {
+      steps {
+        sh """
+          docker run -d  hello_there
+  
         """
       }
     }
