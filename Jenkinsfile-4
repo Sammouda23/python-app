@@ -12,7 +12,7 @@ pipeline{
             git 'https://github.com/Sammouda23/python-app.git'
               }
         }
-    stage('Build'){
+    stage('Buildssss'){
         steps{
             sh 'docker build -t 230589/mypythonapp:latest  . '
         } }   
