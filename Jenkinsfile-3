@@ -3,7 +3,7 @@ pipeline{
  agent any
    
  environment {
-       DOCKERHUB_CREDENTIALS= credentials('dockerhub_id')
+       DOCKERHUB_CREDENTIALS= credentials('58a8c3ff-ca15-44a9-99fb-a8f44a4ec794')
                 }     
  stages {
 
@@ -18,7 +18,7 @@ pipeline{
         } }   
     stage('Login'){
         steps{
-            sh 'ech $DOCKERHUB_CREDENTIALS_PSW  |  docker Login -u $DOCKERHUB_CREDENTIALS_USR  --password-stdin'
+            sh 'ech $DOCKERHUB_CREDENTIALS_PSW  |  docker Login -u 230589  --password-stdin'
         }   }
 
     stage('Push'){
