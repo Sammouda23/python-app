@@ -1,24 +1,48 @@
+pipeline{
 
-node {    
-      def app     
-      stage('Clone repository') {               
-             
-            checkout scm    
-      }     
-      stage('Build image') {         
-       
-            app = docker.build("230589/mypythonapp:latest")    
-       }     
-      stage('Test image') {           
-            app.inside {            
-             
-             sh 'echo "Tests passed"'        
-            }    
-        }     
-       stage('Push image') {
-       docker.withRegistry('https://registry.hub.docker.com', 'git') {            
-       app.push("${env.BUILD_NUMBER}")            
-       app.push("latest")        
-              }    
+ agent any
+   
+ environment {
+       DOCKERHUB_CREDENTIALS= credentials('dockerhub')
+                }     
+ stages {
+
+    stage('gitclone'){
+        steps {
+            git 'https://github.com/Sammouda23/python-app.git'
+              }
+        }
+    stage('Build'){
+        steps{
+            sh 'docker build -t 230589/mypythonapp:latest  . '
+        } }   
+
+    stage('Deploy Docker Image') {
+            steps {
+                script {
+                 withCredentials([string(credentialsId: 'dockerhub_id-pwd', variable: 'dockerhub_id')]) {
+                    sh 'docker login -u devopshint -p ${dockerhub_id}'
+                 }  
+                 sh 'docker push devopshint/my-app-1.0'
+                }
            }
-        }   
+        }
+
+
+
+
+
+
+    stage('Login'){
+        steps{
+            sh 'ech $DOCKERHUB_CREDENTIALS_PSW  |  docker Login -u $DOCKERHUB_CREDENTIALS_USR  --password-stdin'
+        }   }
+
+    stage('Build'){
+        steps{
+            sh 'docker push  230589/mypythonapp:latest '
+        }      
+
+    }
+    }
+}
