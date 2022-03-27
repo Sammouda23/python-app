@@ -18,10 +18,7 @@ pipeline {
     }
     stage("Testing") {
       steps {
-        sh """
-          docker run -d  hello_there
-  
-        """
+        echo "testing complete"
       }
     }
   }
