@@ -1,49 +1,31 @@
-pipeline {
-    agent any 
-    environment {
-        
-        registry = "230589/mypythonapp"
-        
-        registryCredential = 'dockerhub_id'
-        dockerImage = ''
-    }
-    
-    // Building Docker images
-    stage('Building image') {
-      steps{
-        script {
-          dockerImage = docker.build registry
+pipeline{
+
+ agent any
+   
+ environment {
+       DOCKERHUB_CREDENTIALS= credentials('nexus')
+                }     
+ stages {
+
+    stage('gitclone'){
+        steps {
+            git 'https://github.com/Sammouda23/python-app.git'
+              }
         }
-      }
+    stage('Build'){
+        steps{
+            sh 'docker build -t 230589/mypythonapp:latest . '
+        } }   
+    stage('Login'){
+        steps{
+           sh 'echo $DOCKERHUB_CREDENTIALS_PSW | docker login -u $DOCKERHUB_CREDENTIALS_USR --password-stdin'
+        }   }
+
+    stage('Push'){
+        steps{
+            sh 'docker push  230589/mypythonapp:latest '
+        }      
+
     }
-    
-     // Uploading Docker images into Docker Hub
-    stage('Upload Image') {
-     steps{    
-         script {
-            docker.withRegistry( '', registryCredential ) {
-            dockerImage.push()
-            }
-        }
-      }
     }
-    
-     // Stopping Docker containers for cleaner Docker run
-     stage('docker stop container') {
-         steps {
-            sh 'docker ps -f name=mypythonappContainer -q | xargs --no-run-if-empty docker container stop'
-            sh 'docker container ls -a -fname=mypythonappContainer -q | xargs -r docker container rm'
-         }
-       }
-    
-    
-    // Running Docker container, make sure port 8096 is opened in 
-    stage('Docker Run') {
-     steps{
-         script {
-            dockerImage.run("-p 8096:5000 --rm --name mypythonappContainer")
-         }
-      }
-    }
-  
 }
